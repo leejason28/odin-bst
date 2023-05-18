@@ -14,4 +14,11 @@ class Node
     @right = nil
   end
 
+  def is_leaf?
+    if !self.left && !self.right
+      return true
+    end
+    return false
+  end
+
 end
