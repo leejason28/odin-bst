@@ -47,60 +47,101 @@ class Tree
   end
   
   def delete(value)
-    pointer = @root                         #check if root has this value. if not, check children before traversing the tree
-    while pointer.data != value
+    #if no children. done
+    #if 1 child. push up rightmost child if on left or leftmost child if on right
+    #if 2 children. push rightmost child of left or leftmost child of right
+    pointer = @root
+
+  end
+  
+  def find(value)
+    pointer = @root
+    while pointer.data != value         # assumes value is in the tree rn
       if value < pointer.data
         pointer = pointer.left
       else
         pointer = pointer.right
       end
     end
-
-    if pointer.is_leaf?
-      pointer = nil                        #need to let parent know that child is nil!!! this doesnt do shit.
-    else
-      temp = pointer
-      if pointer.left.is_leaf?
-        pointer = pointer.left
-        pointer.right = temp.right
-      elsif pointer.right.is_leaf?
-        pointer = pointer.right
-        pointer.left = temp.left
-      else
-        pointer = pointer.left
-        pointer.right = temp.right
-        pointer.left = temp.left.left
-        pointer.left.right = temp.left.right
+    pointer
+  end
+  
+  def level_order
+    #bfs
+    arr = []
+    arr.push(@root)
+    while arr.length > 0
+      temp = arr[0]
+      yield(temp)
+      arr = arr[1..-1]
+      if temp.left
+        arr.push(temp.left)
+      end
+      if temp.right
+        arr.push(temp.right)
       end
     end
   end
   
-  def find(value)
-  
-  end
-  
-  def level_order
-  
-  end
-  
   def inorder
-  
+    #left,root,right
+    if !self.root
+      return
+    end
+    self.inorder(self.root.left)
+    yield(self.root)
+    self.inorder(self.root.right)
   end
   
   def preorder
-  
+    #root,left,right
+    if !self.root
+      return
+    end
+    yield(self.root)
+    self.preorder(self.root.left)
+    self.preorder(self.root.right)
   end
   
   def postorder
-  
+    #left,right,root
+    if !self.root
+      return
+    end
+    self.postorder(self.root.left)
+    self.postorder(self.root.right)
+    yield(self.root)
   end
   
   def height(node)
-  
+    pointer = @root
+    while pointer != node
+      if node < pointer
+        pointer = pointer.left
+      else
+        pointer = pointer.right
+      end 
+    end
+    h = 0
+    while pointer.is_leaf? == false #need to find longest path
+      pointer = pointer.left
+      h += 1
+    end
+    h
   end
   
   def depth(node)
-  
+    pointer = @root
+    d = 0
+    while pointer != node
+      if node < pointer
+        pointer = pointer.left
+      else
+        pointer = pointer.right
+      end
+      d += 1
+    end
+    d
   end
   
   def balanced?
