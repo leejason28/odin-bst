@@ -14,12 +14,12 @@ class Tree
     #find middle of array -> set as root
     #recursively set root.left and root.right as build_tree(left/right_half)
     #return root
-    if arr.length == 1
-      return Node.new(arr[0])
+    if arr.length == 0
+      return
     end
     root = Node.new(arr[arr.length/2])
-    root.left = build_tree(arr[0..(arr.length/2)-1])
-    root.right = build_tree(arr[(arr.length/2)..-1])
+    root.left = build_tree(arr[0...arr.length/2])
+    root.right = build_tree(arr[(arr.length/2)+1..-1])
     root
   end
   
