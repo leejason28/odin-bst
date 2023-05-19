@@ -1,10 +1,15 @@
 require_relative './node'
 require_relative './tree'
 
-arr = [1,7,4,23,8,9,3]
+arr = Array.new(15) { rand(1..100) }
+p arr
 t = Tree.new(arr)
-p t
-t.insert(10)
-p t
-t.insert(12)
-p t
+p "balanced?: #{t.balanced?}"
+p "level order:"
+#t.level_order { |node| puts node.data } 
+p "pre order:"
+p t.preorder
+p "post order:"
+p t.postorder
+p "in order:"
+p t.inorder
