@@ -14,12 +14,12 @@ class Tree
     #find middle of array -> set as root
     #recursively set root.left and root.right as build_tree(left/right_half)
     #return root
-    if arr.length <= 1
+    if arr.length == 1
       return Node.new(arr[0])
     end
     root = Node.new(arr[arr.length/2])
     root.left = build_tree(arr[0..(arr.length/2)-1])
-    root.right = build_tree(arr[(arr.length/2)+1..-1])
+    root.right = build_tree(arr[(arr.length/2)..-1])
     root
   end
   
@@ -182,6 +182,12 @@ class Tree
   
   def rebalance
   
+  end
+
+  def pretty_print(node = @root, prefix = '', is_left = true)
+    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 
 end
