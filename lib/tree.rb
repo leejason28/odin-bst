@@ -84,15 +84,26 @@ class Tree
     return find(root.right, value)
   end
   
-  def level_order(root = @root, queue = [])
+  def level_order(root = @root, queue = [], arr = [], &block)
     #bfs
-    if !root
+    if !root && queue.length==0
       return
     else
-      yield(root)
-      queue.push(root.left)
-      queue.push(root.right)
-      level_order(queue[0], queue[1..-1])
+      if root
+        if block_given?
+          yield(root)
+          queue.push(root.left)
+          queue.push(root.right)
+        else
+          arr.push(root.data)
+          queue.push(root.left)
+          queue.push(root.right)
+        end
+      end
+      level_order(queue[0], queue[1..-1], arr, &block)
+    end
+    if !block_given?
+      arr
     end
   end
   
@@ -181,7 +192,8 @@ class Tree
   end
   
   def rebalance
-  
+    sorted = self.inorder
+    @root = build_tree(sorted)
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
